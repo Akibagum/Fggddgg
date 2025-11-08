@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Killing Ad Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .ad-container {
+            position: relative;
+            margin: 20px 0;
+            border: 1px dashed #ccc;
+            padding: 10px;
+        }
+        .ad-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: white;
+            padding: 0 5px;
+            font-size: 12px;
+            color: #666;
+        }
+        .ad-link {
+            display: block;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .info-box {
+            background-color: #e8f4fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .reset-btn {
+            background-color: #f44336;
+        }
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auto-Killing Ad Link 데모</h1>
+        <div class="info-box">
+            <p>아래 광고를 클릭하면 자동으로 제거됩니다. (Auto-Killing 기능)</p>
+        </div>
+        
+        <div class="ad-container">
+            <span class="ad-label">광고 (클릭하면 제거됨)</span>
+            <a href="#" class="ad-link" id="autoKillingAd">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '8ddd4c4fb0058db5a63c2ed9c256f4c3',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/8ddd4c4fb0058db5a63c2ed9c256f4c3/invoke.js"></script>
+            </a>
+        </div>
+        
+        <div class="info-box">
+            <p>광고가 제거된 후에는 이 메시지가 표시됩니다.</p>
+        </div>
+        
+        <div>
+            <button onclick="resetAd()">광고 초기화</button>
+            <button class="reset-btn" onclick="location.reload()">페이지 새로고침</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const adLink = document.getElementById('autoKillingAd');
+            
+            // 광고 클릭 시 제거하는 이벤트 리스너 추가
+            adLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 광고 컨테이너 찾기
+                let adContainer = this.closest('.ad-container');
+                
+                if (adContainer) {
+                    // 광고 제거 애니메이션
+                    adContainer.style.transition = 'opacity 0.3s ease';
+                    adContainer.style.opacity = '0';
+                    
+                    // 애니메이션 후 완전히 제거
+                    setTimeout(() => {
+                        adContainer.remove();
+                        
+                        // 광고가 제거되었음을 알리는 메시지 표시
+                        const message = document.createElement('div');
+                        message.innerHTML = '<div class="info-box"><p>광고가 성공적으로 제거되었습니다!</p></div>';
+                        document.querySelector('.container').insertBefore(message, document.querySelector('.info-box'));
+                    }, 300);
+                }
+            });
+        });
+        
+        // 광고 초기화 함수
+        function resetAd() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
